@@ -35,7 +35,8 @@ impl Lexer {
     pub fn next_token(&mut self) -> Token {
         self.skip_whitespace();
 
-        match self.ch {
+        println!("{}", self.ch);
+        let tok = match self.ch {
             '=' => new_token(ASSIGN, self.ch),
             ';' => new_token(SEMICOLON, self.ch),
             '(' => new_token(LPAREN, self.ch),
@@ -70,7 +71,10 @@ impl Lexer {
                     }
                 }
             }
-        }
+        };
+
+        self.read_char();
+        tok
     }
     fn skip_whitespace(&mut self) {
         if self.ch.is_whitespace() || self.ch == '\t' || self.ch == '\n' || self.ch == '\r' {
@@ -119,7 +123,8 @@ fn is_letter(ch: char) -> bool {
 }
 
 fn is_digit(ch: char) -> bool {
-    '0' <= ch && ch <= '9'
+    ch.is_numeric()
+    //'0' <= ch && ch <= '9'
 }
 
 #[test]
@@ -167,4 +172,10 @@ fn test_real_code() {
     lex.read_char();
     let tok = &lex.next_token();
     assert_eq!(tok.typed, "INT");
+}
+
+#[test]
+fn test_revised() {
+    let x = "let five = 5;";
+    for i in x.chars() {}
 }
